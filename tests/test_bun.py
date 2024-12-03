@@ -3,20 +3,16 @@ from praktikum.bun import Bun
 
 class TestBun:
 
-    def test_bun_initialization(self):
-        bun = Bun("white", 50)
-        assert bun.get_name() == "white"
-        assert bun.get_price() == 50
+    @pytest.mark.parametrize("name, price, expected_name, expected_price", [
+        ("white", 50, "white", 50),
+        ("black", -10, "black", -10),
+        ("red", 0, "red", 0)
+    ])
 
-    def test_bun_initialization_with_negative_price(self):
-        bun = Bun("black", -10)
-        assert bun.get_name() == "black"
-        assert bun.get_price() == -10
-
-    def test_bun_initialization_with_zero_price(self):
-        bun = Bun("red", 0)
-        assert bun.get_name() == "red"
-        assert bun.get_price() == 0
+    def test_bun_initialization(self, name, price, expected_name, expected_price):
+        bun = Bun(name, price)
+        assert bun.get_name() == expected_name
+        assert bun.get_price() == expected_price
 
     def test_bun_price(self):
         bun = Bun("blue", 100)

@@ -1,21 +1,5 @@
-import pytest
-from praktikum.bun import Bun
 from praktikum.ingredient import Ingredient
-from praktikum.ingredient_types import INGREDIENT_TYPE_SAUCE, INGREDIENT_TYPE_FILLING
-from praktikum.burger import Burger
-
-
-@pytest.fixture
-def mock_burger():
-    bun = Bun("white", 50)
-    ingredient1 = Ingredient(INGREDIENT_TYPE_SAUCE, "hot sauce", 20)
-    ingredient2 = Ingredient(INGREDIENT_TYPE_FILLING, "cutlet", 100)
-
-    burger = Burger()
-    burger.set_buns(bun)
-    burger.add_ingredient(ingredient1)
-    burger.add_ingredient(ingredient2)
-    return burger
+from praktikum.ingredient_types import INGREDIENT_TYPE_SAUCE
 
 
 class TestBurger:
@@ -47,3 +31,14 @@ class TestBurger:
 
     def test_get_price(self, mock_burger):
         assert mock_burger.get_price() == 50 * 2 + 20 + 100
+
+    def test_get_receipt(self, mock_burger):
+        receipt = mock_burger.get_receipt()
+        expected_receipt = """(==== white ====)
+= sauce hot sauce =
+= filling cutlet =
+(==== white ====)
+
+Price: 220"""
+        assert receipt.strip() == expected_receipt.strip()
+
